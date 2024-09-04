@@ -68,7 +68,64 @@ const base73 = {
             byteArray.push(parseInt(padToLength(byteChunk, 8), 2));
         }
 
-        return new Uint8Array(byteArray);
+        let trimmedByteArray = byteArray;
+        while (trimmedByteArray.length > 0 && trimmedByteArray[trimmedByteArray.length - 1] === 0) {
+            trimmedByteArray.pop();
+        }
+
+        return new Uint8Array(trimmedByteArray);
+    },
+
+    fromHex(hexString) {
+        const bytes = new Uint8Array(hexString.length / 2);
+        for (let i = 0; i < hexString.length; i += 2) {
+            bytes[i / 2] = parseInt(hexString.substr(i, 2), 16);
+        }
+        return this.encode(bytes);
+    },
+
+    toHex(base256String) {
+        const byteArray = this.decode(base256String);
+        return Array.from(byteArray).map(byte => byte.toString(16).padStart(2, '0')).join('');
+    },
+
+    fromDecimal(decimal) {
+        const byteArray = [];
+        while (decimal > 0) {
+            byteArray.push(decimal & 0xFF);
+            decimal = Math.floor(decimal / 256);
+        }
+        return this.encode(new Uint8Array(byteArray.reverse()));
+    },
+
+    toDecimal(base256String) {
+        const byteArray = this.decode(base256String);
+        return byteArray.reduce((acc, byte, index) => acc + byte * Math.pow(256, byteArray.length - index - 1), 0);
+    },
+
+    fromBinary(binaryString) {
+        const bytes = new Uint8Array(binaryString.length / 8);
+        for (let i = 0; i < binaryString.length; i += 8) {
+            bytes[i / 8] = parseInt(binaryString.substr(i, 8), 2);
+        }
+        return this.encode(bytes);
+    },
+
+    toBinary(base256String) {
+        const byteArray = this.decode(base256String);
+        return Array.from(byteArray).map(byte => byte.toString(2).padStart(8, '0')).join('');
+    },
+
+    fromString(str) {
+        const utf8Encoder = new TextEncoder();
+        const byteArray = utf8Encoder.encode(str);
+        return this.encode(byteArray);
+    },
+
+    toString(base256String) {
+        const byteArray = this.decode(base256String);
+        const utf8Decoder = new TextDecoder();
+        return utf8Decoder.decode(byteArray);
     }
 };
 
