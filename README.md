@@ -1,93 +1,76 @@
-# base73
+# Base73
+> A lightweight JavaScript implementation of the base73 encoding method.
 
+Base73 uses a set of 73 ASCII characters, where binary data is taken 7 bits at a time, and mapped to each character. Since `2^7` is equal to 128, the first 54 characters of the set contain secondary values, that can be accessed by prefixing with the secondary access character. The secondary access character is `^` (ASCII 94). If the encoded data is not divisible by 8, padding is added, determined by how many characters are missing to reach the next multiple of 8. The padding character is `=` (ASCII 61).
 
-
-## Getting started
-
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
-
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
-
-## Add your files
-
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
-
+## Getting Started
+To get started, install the library:
 ```
-cd existing_repo
-git remote add origin https://gitlab.com/jacobhaap/base73.git
-git branch -M main
-git push -uf origin main
+npm install base73
 ```
-
-## Integrate with your tools
-
-- [ ] [Set up project integrations](https://gitlab.com/jacobhaap/base73/-/settings/integrations)
-
-## Collaborate with your team
-
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
-
-## Test and Deploy
-
-Use the built-in continuous integration in GitLab.
-
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
-
-***
-
-# Editing this README
-
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+The library can handle Unit8Array, Buffer, Hexadecimal, String, Decimal, and Binary data types. All encoding and decoding can be completed using the `base73` function.
+ - base73.Unit8Array.from()
+ - base73.toUnit8Array()
+ - base73.buffer.from()
+ - base73.toBuffer()
+ - base73.hex.from()
+ - base73.toHex()
+ - base73.string.from()
+ - base73.toString()
+ - base73.decimal.from()
+ - base73.toDecimal()
+ - base73.binary.from()
+ - base73.toBinary()
 
 ## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+First, require the module:
+```
+const base73 = require('base73');
+```
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+The following example shows how you can convert between a string and a base73 encoded string:
+```
+const base73 = require('base73');
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+const string = "Nothing Matters.";
+console.log("Encoded String:", base73.string.from(string));
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+// Example Output
+// Encoded String: TH^RxuR^@^K9@YDP^1^#^Vk^$r======
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+```
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+This next example shows conversion from base73 encoded strings, to Unit8Arrays and Hexadecimal:
+```
+const base73 = require('base73');
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+const encodedString = "TH^RxuR^@^K9@YDP^1^#^Vk^$r======";
 
-## License
-For open source projects, say how it is licensed.
+console.log("Unit8Array:", base73.toUnit8Array(encodedString));
+console.log("Hexadecimal:", base73.toHex(encodedString));
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+// Example output
+// Unit8Array: Uint8Array(16) [78, 111, 116, 104, 105, 110, 103, 32, 77, 97, 116, 116, 101, 114, 115, 46]
+// Hexadecimal: 4e6f7468696e67204d6174746572732e
+
+```
+
+## Character Set
+The base73 character set is based on 73 ASCII characters. Alongside this is also the use of the secondary access character `^`, and the padding character `=`, making for a total extended set size of 75.
+```
+const base73CharSet = [
+    33, 35, 36, 37, 38, 43, 45, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 60, 62,
+    64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82,
+    83, 84, 85, 86, 87, 88, 89, 90, 95, 97, 98, 99, 100, 101, 102, 103, 104, 105,
+    106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120,
+    121, 122,
+  ];
+
+// Characters
+// !#$%&+-0123456789<>
+// @ABCDEFGHIJKLMNOPQR
+// STUVWXYZ_abcdefghi
+// jklmnopqrstuvwx
+// yz
+  
+```
