@@ -1,0 +1,16 @@
+{
+  "name": "base73",
+  "version": "1.0.0",
+  "description": "Base73 Encoding and Decoding.",
+  "main": "base73.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/jacobhaap/base73.git"
+  },
+  "author": "Jacob Haap",
+  "license": "MIT",
+  "homepage": "https://gitlab.com/jacobhaap/base73#readme"
+}
