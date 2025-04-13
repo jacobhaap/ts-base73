@@ -1,61 +1,68 @@
-# Base73 
-![NPM Version](https://img.shields.io/npm/v/base73) ![NPM License](https://img.shields.io/npm/l/base73) ![NPM Unpacked Size](https://img.shields.io/npm/unpacked-size/base73)
+# TypeScript | Base73
+![NPM Version](https://img.shields.io/npm/v/base73) ![GitLab License](https://img.shields.io/gitlab/license/61406328) ![NPM Type Definitions](https://img.shields.io/npm/types/base73) ![NPM Unpacked Size](https://img.shields.io/npm/unpacked-size/base73)
 
-> An encoding method using a base of 73.
+> An ASCII encoding scheme with a base of 73 for binary data.
 
-**Base73** is an encoding method using a base of 73 and an ASCII character set. Binary data is taken 7 bits at a time, and mapped to each character. Since `2^7` is equal to 128, the first 54 characters of the set contain secondary values, that can be accessed by prefixing with the secondary access character. The secondary access character is `^` (ASCII 94). If the encoded data is not divisible by 8, padding is added, determined by how many characters are missing to reach the next multiple of 8. The padding character is `=` (ASCII 61).
+**Base73** is an encoding scheme for binary data using a base of 73 and an ASCII character set. Binary data is taken 7 bits at a time, and mapped to each character. Since `2^7` is equal to 128, the first 54 characters of the set contain secondary values, which are represented by prefixing the character with the secondary access character. The secondary access character is `^` (ASCII 94).
 
-To get started, install the library:
+Natively in **TypeScript**, with **ESM** and **CommonJS** compatibility. To get started, install the library:
 ```bash
+# Deno
+deno add jsr:@jacobhaap/base73
+
+# Node.js
 npm install base73
 ```
-Character Set:
+
+*Character Set:*
 ```
 !#$%&+-0123456789<>@ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz
 ```
 
-## Encoding & Decoding
-This library supports Base73 Encoding & Decoding from **Strings**, **Buffers**, **Uint8Arrays**, and **Hexadecimal**. These are all supported as methods of `base73`. When decoding, if an invalid character is detected in the Base73 string, an error will be thrown unless strict decoding is disabled.
+## Encoding
+A **Uint8Array** can be encoded to a **base73 string** using the `encode` function.
+
+The *encode* function has one input parameter:
 ```js
-// String Encoding & Decoding String
-base73.fromString(string);
-base73.toString(base73String, strict =  true);
+function encode(bytes) {};
+```
+Where:
+ - ***bytes*** is binary data for encoding.
 
-// Buffer Encoding & Decoding
-base73.fromBuffer(buffer);
-base73.toBuffer(base73String, strict =  true);
+The ***bytes*** parameter is expected as a *Uint8Array*. The *encode* function is synchronous, and returns a *string*.
 
-// Uint8Array Encoding & Decoding
-base73.fromUint8Array(uint8Array);
-base73.toUint8Array(base73String, strict =  true);
+*Example use:*
+```ts
+import { encode } from "@jacobhaap/base73";
 
-//Hexadecimal Encoding & Decoding
-base73.fromHex(hex);
-base73.toHex(base73String, strict =  true);
-
+const bytes = Uint8Array.from([34, 84, 104, 101, 32, 71, 97, 109, 101, 34]);
+const str = encode(bytes); // <B6-V#7^Eh^9QM
 ```
 
-## Example Use
-In this first example, the `.fromString()` method of `base73` is used to encode a String to Base73.
+## Decoding
+A **base73 string** can be decoded to a **Uint8Array** using the `decode` function.
+
+The *decode* function has two input parameters:
 ```js
-const base73 = require('base73');
-
-const string = "Nothing Matters.";
-console.log(base73.fromString(string));
-
-// Sample Output:
-// TH^RxuR^@^K9@YDP^1^#^Vk^$r======
-
+function decode(str, strict = true) {};
 ```
+Where:
+ - ***str*** is a base73-encoded string for decoding.
+ - ***strict*** is an optional value to disable strict decoding.
 
-In this second example, the `.toHex()` method of `base73` is used to decode Base73 to Hexadecimal.
-```js
-const base73 = require('base73');
+The ***str*** parameter expects a base73- encoded *string*, and the optional ***strict*** parameter expects a *boolean* value (defaults to *true*). The decode function is synchronous, and returns a *Uint8Array*.
 
-const base73String = "Q^A&^_F#I^ImF_O$o^P^Ik!=";
-console.log(base73.toHex(base73String));
+*Example use:*
+```ts
+import { decode } from "@jacobhaap/base73";
 
-// Sample Output:
-// Q^A&^_F#I^ImF_O$o^P^Ik!=
+const str = "<B6-V#7^Eh^9QM";
+const bytes = decode(str);
 
+/*
+Uint8Array(10) [
+  34, 84, 104, 101, 32,
+  71, 97, 109, 101, 34
+]
+*/
 ```
