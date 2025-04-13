@@ -1,0 +1,29 @@
+{
+  "name": "@jacobhaap/base73",
+  "version": "1.2.0",
+  "license": "MIT",
+  "exports": "./src/mod.ts",
+  "compilerOptions": {
+    "strict": true,
+    "lib": ["deno.ns", "deno.window", "esnext"]
+  },
+  "include": [
+    "./src/**/*",
+    "deno.json",
+    "deno.lock",
+    "LICENSE",
+    "README.md"
+  ],
+  "exclude": [
+    "./.github",
+    "./scripts",
+    ".gitlab-ci.yml",
+    ".gitignore"
+  ],
+  "test": {
+    "include": ["./tests/**/*"]
+  },
+  "imports": {
+    "@deno/dnt": "jsr:@deno/dnt@^0.41.3"
+  }
+}
